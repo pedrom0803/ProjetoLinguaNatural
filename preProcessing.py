@@ -27,7 +27,7 @@ class PreProcessing:
                 # Adicionar a lista de filmes ao array 2D
                 self.dados_filmes.append(filme)
         
-        print(self.dados_filmes[0],"\n")
+        #print(self.dados_filmes[0],"\n")
     
     def cleaningText(self):
         for i in range(len(self.dados_filmes)):

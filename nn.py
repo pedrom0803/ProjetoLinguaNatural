@@ -6,17 +6,20 @@ class SimpleFFNN:
         self.layer_sizes = layer_sizes
         self.weights = []
         self.biases = []
-        
+        self.vectorizer=None
+        self.encoder=None
         # Inicializa pesos e viés para cada camada
         for i in range(len(layer_sizes) - 1):
             self.weights.append(np.random.randn(layer_sizes[i], layer_sizes[i + 1]))
             self.biases.append(np.random.randn(layer_sizes[i + 1]))
     
     @classmethod
-    def from_weights_bias(cls, weights, bias):
+    def from_weights_bias(cls, weights, bias, vectorizer, encoder):
         instance = cls([])  # Cria uma instância sem camada
         instance.weights = weights
         instance.biases = bias
+        instance.vectorizer=vectorizer
+        instance.encoder=encoder
         return instance
         
     def sigmoid(self, x):
@@ -25,12 +28,20 @@ class SimpleFFNN:
     def sigmoid_derivative(self, x):
         return x * (1 - x)
 
+    def softmax(self, x):
+        exp_x = np.exp(x - np.max(x))  # Subtração para estabilidade numérica
+        return exp_x / np.sum(exp_x, axis=0)
+
     def forward(self, x):
         self.activations = [x]
         # Compute activations for each layer
         for i in range(len(self.weights)):
             x = self.sigmoid(np.dot(x, self.weights[i]) + self.biases[i])
             self.activations.append(x)
+        # Para a última camada, use softmax
+        x = self.softmax(np.dot(x, self.weights[-1]) + self.biases[-1])
+        self.activations.append(x)
+        
         return x
 
     def train(self, x, y, epochs, learning_rate):
@@ -58,12 +69,12 @@ class SimpleFFNN:
                 print(f'Epoch {epoch}, Loss {loss}')
                 
     #Guardar o modelo depois de o treinar
-    def save_model(self, filename):
+    def save_model(self, filename,vectorizer,encoder):
         with open(f'{filename}.pkl', 'wb') as f:
-            pickle.dump({'weights': self.weights, 'biases': self.biases}, f)
+            pickle.dump({'weights': self.weights, 'biases': self.biases,'vectorizer': vectorizer, 'encoder':encoder}, f)
             
     #Usar o modelo para o poder testar
     def load_model(self, model : 'SimpleFFNN', filename):
         with open(f'{filename}.pkl', 'rb') as f:
             data = pickle.load(f)
-            return SimpleFFNN.from_weights_bias(data['weights'],data['biases'])
+            return SimpleFFNN.from_weights_bias(data['weights'],data['biases'],data['vectorizer'],data['encoder'])
