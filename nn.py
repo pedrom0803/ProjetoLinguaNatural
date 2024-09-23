@@ -39,8 +39,8 @@ class SimpleFFNN:
             x = self.sigmoid(np.dot(x, self.weights[i]) + self.biases[i])
             self.activations.append(x)
         # Para a última camada, use softmax
-        x = self.softmax(np.dot(x, self.weights[-1]) + self.biases[-1])
-        self.activations.append(x)
+        # x = self.softmax(np.dot(x, self.weights[-1]) + self.biases[-1])
+        # self.activations.append(x)
         
         return x
 
@@ -74,7 +74,7 @@ class SimpleFFNN:
             pickle.dump({'weights': self.weights, 'biases': self.biases,'vectorizer': vectorizer, 'encoder':encoder}, f)
             
     #Usar o modelo para o poder testar
-    def load_model(self, model : 'SimpleFFNN', filename):
-        with open(f'{filename}.pkl', 'rb') as f:
+    def load_model(filename):
+        with open(f'{filename}', 'rb') as f:
             data = pickle.load(f)
             return SimpleFFNN.from_weights_bias(data['weights'],data['biases'],data['vectorizer'],data['encoder'])

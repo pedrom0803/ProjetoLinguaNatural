@@ -3,7 +3,7 @@ from nn import SimpleFFNN
 from train import Train
 from preProcessing import PreProcessing
 import numpy as np
-
+from testModel import TestModel
 
 def split_array(data: np.ndarray, train_size: float = 0.75):
     """
@@ -31,12 +31,11 @@ if __name__ == "__main__":
     genres = ['drama', 'comedy', 'horror', 'action', 'romance', 'western', 'animation', 'crime', 'sci-fi']
     
     #file onde já está o modelo treinado
-    nnFile="ficheiro_com_modelo_treinado"
+    nnFile="ficheiro_com_novo_modelo"
     model=None
 
-    nodes_input=4
-    nodes_outuput=len(genres)
-
+    nodes_outuput=[len(genres)]
+    
     #limpesa de ficheiro de treino
     data="train"
     
@@ -52,7 +51,7 @@ if __name__ == "__main__":
     data_to_train, data_to_test = split_array(clean_data)
 
     # Carregar o modelo se ele já existir
-    if os.path.isfile(nnFile):
+    if os.path.isfile(nnFile+".pkl"):
         print("\033[34mLoading Model\n\033[0m")
         
         model=SimpleFFNN.load_model(nnFile+".pkl")
@@ -63,28 +62,23 @@ if __name__ == "__main__":
         print("\033[34mCreating a new Model\n\033[0m")
         
         newNNFile="ficheiro_com_novo_modelo"
-        layer_sizes = [nodes_input, 5, nodes_outuput] # adicionar o numero de nos por camada,hidden, que bem se entender
+        layer_hidden = [5] # adicionar o numero de nos por camada,hidden, que bem se entender([5]->5 nos na camada hidden1; [3,6]-> 3 na camada hidden 1 e 6 na hidden 2;...)
         learning_rate = 0.01
-        epochs=100
-        model = Train(data_to_train,newNNFile.join(".pkl"),layer_sizes, learning_rate, epochs)
+        epochs=1
+        model = Train(data_to_train,newNNFile,layer_hidden,nodes_outuput, learning_rate, epochs)
         model.train()
         
         print("\033[32mModel Created!\n\033[0m")
         
-        
-    print("\033[34m Testing the Model\n\033[0m")
+    model_teste= TestModel("ficheiro_com_novo_modelo")
     
-    for test in data_to_test: 
-        output = model.forward(test[:, [0, 1, 3, 4]])
-        predicted_genre_index = np.argmax(output)
-        # O gênero previsto é o que corresponde ao índice com maior probabilidade
-        predicted_genre = genres[predicted_genre_index]
-        if predicted_genre==test[:, 2]:
-            print(f"\033[34m'Model: {predicted_genre}',Test: '{test[:, 2]}'")
-        else:
-            print(f"\033[31m'Model: {predicted_genre}',Test: '{test[:, 2]}'")
-
-    print("\033[36mTest Completead!\n\033[0m")
+    # Testar e comparar labels
+    #model_teste.test_with_label(data_to_test)
+    
+    # Testar e apenas escrever resultados no ficheiro 'results.txt'
+    # pp_no_label = PreProcessing("test_no_labels")
+    # clean_data_no_label = pp_no_label.returnCleanText()
+    # model_teste.test_without_labels(clean_data_no_label)
 
 
 

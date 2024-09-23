@@ -2,13 +2,13 @@ import numpy as np
 from nn import SimpleFFNN
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.preprocessing import OneHotEncoder
-import pickle
+
 
 class Train:
-    def __init__(self, data_to_train: list, nnFile: str, layer_size, learning_rate: float, epochs: int) -> None:
+    def __init__(self, data_to_train: list, nnFile: str, layer_hiddens,nodes_outuput, learning_rate: float, epochs: int) -> None:
         # Converte a lista em um array NumPy para permitir indexação por colunas
+        self.hidden_out=layer_hiddens+nodes_outuput
         self.file = np.array(data_to_train)
-        self.model = SimpleFFNN(layer_size)
         self.export_nn = nnFile
         self.learning_rate = learning_rate
         self.epochs = epochs
@@ -34,7 +34,12 @@ class Train:
 
         # Combinar todas as features
         x = np.hstack((title_features, origin_features, director_features, plot_features))
-
+        input_nodes=[]
+        total_nodes = title_features.shape[1] + origin_features.shape[1] +  director_features.shape[1] + plot_features.shape[1]
+        input_nodes.append(total_nodes)
+        layer_size= input_nodes + self.hidden_out
+        self.model = SimpleFFNN(layer_size)
+        
         # Treinar o modelo
         self.model.train(x, genre_features, self.epochs, self.learning_rate)
 
