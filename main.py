@@ -5,12 +5,12 @@ from preProcessing import PreProcessing
 import numpy as np
 from testModel import TestModel
 
-def split_array(data: np.ndarray, train_size: float = 0.75):
+def split_array(data: np.ndarray, train_size: float = 0.8):
     """
     Divide um array 2D em dois arrays: um com train_size dos dados e outro com o restante.
     
     :param data: O array 2D a ser dividido.
-    :param train_size: A proporção de dados a serem usados para o primeiro array (default é 0.75).
+    :param train_size: A proporção de dados a serem usados para o primeiro array (default é 0.8).
     :return: Dois arrays 2D, um com os dados de treinamento e outro com os dados de teste.
     """
     # Calcula o índice para a divisão
