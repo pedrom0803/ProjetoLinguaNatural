@@ -70,7 +70,7 @@ class SimpleFFNN:
                 
     #Guardar o modelo depois de o treinar
     def save_model(self, filename,vectorizer,encoder):
-        with open(f'{filename}.pkl', 'wb') as f:
+        with open(f'.data/{filename}.pkl', 'wb') as f:
             pickle.dump({'weights': self.weights, 'biases': self.biases,'vectorizer': vectorizer, 'encoder':encoder}, f)
             
     #Usar o modelo para o poder testar

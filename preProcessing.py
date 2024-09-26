@@ -17,7 +17,7 @@ stopWords=["i", "me", "my", "we", "our", "ours", "ourselves", "you",
 class PreProcessing:
     def __init__(self,filename):
         self.dados_filmes = []
-        with open(filename, 'r', encoding='utf-8') as file:
+        with open("./data/"+filename, 'r', encoding='utf-8') as file:
             # Lendo o arquivo linha por linha
             for linha in file:
                 # Remover espaços em branco no início e fim (incluindo quebras de linha)
