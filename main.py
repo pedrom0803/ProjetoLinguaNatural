@@ -37,7 +37,7 @@ if __name__ == "__main__":
     nodes_outuput=[len(genres)]
     
     #limpesa de ficheiro de treino
-    data="train"
+    data="data/train"
     
     print("\033[34mPre Processing the data\n\033[0m")
     
@@ -61,7 +61,7 @@ if __name__ == "__main__":
     else:
         print("\033[34mCreating a new Model\n\033[0m")
         
-        newNNFile="ficheiro_com_novo_modelo"
+        newNNFile="data/ficheiro_com_novo_modelo"
         layer_hidden = [5] # adicionar o numero de nos por camada,hidden, que bem se entender([5]->5 nos na camada hidden1; [3,6]-> 3 na camada hidden 1 e 6 na hidden 2;...)
         learning_rate = 0.01
         epochs=1

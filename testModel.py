@@ -3,7 +3,7 @@ import os
 class TestModel:
     
     def __init__(self,filename) -> None:
-        file=filename+".pkl"
+        file="data/"+filename+".pkl"
         if os.path.isfile(file):
             self.nn= SimpleFFNN.load_model(file)
         else:
