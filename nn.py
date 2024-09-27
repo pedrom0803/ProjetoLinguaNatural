@@ -64,9 +64,8 @@ class SimpleFFNN:
                     self.weights[j] += np.outer(self.activations[j], d_activations) * learning_rate
                     self.biases[j] += d_activations * learning_rate
 
-            if epoch % 20 == 0:
-                loss = np.mean(np.square(y - self.forward(x)))
-                print(f'Epoch {epoch}, Loss {loss}')
+            loss = np.mean(np.square(y - self.forward(x)))
+            print(f'Epoch {epoch}, Loss {loss}')
                 
     #Guardar o modelo depois de o treinar
     def save_model(self, filename,vectorizer,encoder):

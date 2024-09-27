@@ -29,7 +29,7 @@ class PreProcessing:
         
         #print(self.dados_filmes[0],"\n")
     
-    def cleaningText(self):
+    def _cleaningText(self):
         for i in range(len(self.dados_filmes)):
             # Separar o plot (que está na 5ª coluna) em palavras
             texto = self.dados_filmes[i][4].split(" ")
@@ -41,5 +41,5 @@ class PreProcessing:
         #print(self.dados_filmes[0])
     
     def returnCleanText(self):
-        self.cleaningText()
+        self._cleaningText()
         return self.dados_filmes
