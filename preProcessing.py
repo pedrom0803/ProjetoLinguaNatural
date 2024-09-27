@@ -43,3 +43,8 @@ class PreProcessing:
     def returnCleanText(self):
         self._cleaningText()
         return self.dados_filmes
+    
+    def returnCleanInputText(texto):
+        text = texto.split(" ")
+        newText = [word for word in text if word.lower() not in stopWords]
+        return " ".join(newText)  # Junta as palavras da lista de volta em uma string
