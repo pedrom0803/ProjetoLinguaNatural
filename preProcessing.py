@@ -48,3 +48,29 @@ class PreProcessing:
         text = texto.split(" ")
         newText = [word for word in text if word.lower() not in stopWords]
         return " ".join(newText)  # Junta as palavras da lista de volta em uma string
+    
+    def returnOurDataClean(filename):
+        dados = []
+        with open("./data/"+filename, 'r', encoding='utf-8') as file:
+            # Lendo o arquivo linha por linha
+            for linha in file:
+                # Remover espaços em branco no início e fim (incluindo quebras de linha)
+                linha = linha.strip()
+                # Separar os dados usando o tab ('\t') como delimitador
+                filme = linha.split('\t')
+                # Adicionar a lista de filmes ao array 2D
+                dados.append(filme)
+                
+        for i in range(len(dados)):
+            #Descomentar para saber pq  a divisao nao esta  a ser bem feita
+            #print(dados[i])
+            # Separar o plot (que está na 2ª coluna) em palavras
+            texto = dados[i][2].split(" ")
+            # Filtrar palavras que não estão nas stopwords
+            newText = [word for word in texto if word.lower() not in stopWords]
+            # Juntar as palavras filtradas de volta em uma string
+            dados[i][2] = " ".join(newText)
+        
+        return dados
+        
+        
