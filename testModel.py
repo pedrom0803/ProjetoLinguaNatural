@@ -1,6 +1,6 @@
 from nn import SimpleFFNN
 import os 
-import numpy as np
+import re
 
 class TestModel:
     
@@ -26,10 +26,10 @@ class TestModel:
             predicted_genre = self.nn.encoder.inverse_transform(prediction)  # Decodificar o gênero
             
             if predicted_genre == test[int(genre_index)]:
-                print(f"\033[32mFor the movie '{test[0]}' the model said: {predicted_genre}', and was: '{test[int(genre_index)]}'\033[0m")
+                print(f"\033[32mFor the movie '{test[0]}' the model said: '{predicted_genre[0]}', and was: '{test[int(genre_index)]}'\033[0m")
                 corrects += 1.0
             else:
-                print(f"\033[31mFor the movie '{test[0]}' the model said: {predicted_genre}', and was: '{test[int(genre_index)]}'\033[0m")
+                print(f"\033[31mFor the movie '{test[0]}' the model said: '{predicted_genre[0]}', and was: '{test[int(genre_index)]}'\033[0m")
         
         success = float(corrects / total) * 100
         
@@ -46,7 +46,7 @@ class TestModel:
             plot_vector = self.nn.vectorizer.transform([test[3]]).toarray()  # Vetorizar o texto
             prediction = self.nn.forward(plot_vector)  # Fazer a predição
             predicted_genre = self.nn.encoder.inverse_transform(prediction)  # Decodificar o gênero
-            results.append(predicted_genre)
+            results.append(predicted_genre[0])
 
         # Escrever os resultados no arquivo "results.txt"
         with open("data/results.txt", 'w') as file:
@@ -63,7 +63,7 @@ class TestModel:
         predicted_genre = self.nn.encoder.inverse_transform(prediction)  # Decodificar o gênero
         
         if predicted_genre == genre:
-            print(f"\033[32mFor the movie given by input the model said: {predicted_genre}', and was: '{genre}'\033[0m")
+            print(f"\033[32mFor the movie given by input the model said: '{predicted_genre[0]}', and was: '{genre}'\033[0m")
         else:
-            print(f"\033[31mFor the movie given by input the model said: {predicted_genre}', and was: '{genre}'\033[0m")
+            print(f"\033[31mFor the movie given by input the model said: '{predicted_genre[0]}', and was: '{genre}'\033[0m")
         
